@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, FlatList, ActivityIndicator} from 'react-native';
-import ItemProducto from '../components/ItemProduct';
+import { StyleSheet, View, FlatList, ActivityIndicator, Text} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import ItemProducto from '../components/ItemProduct';
 
 function List({ navigation }) {
     const listName = navigation.getParam('listName');
@@ -29,7 +29,15 @@ function List({ navigation }) {
     return (
         <View style={styles.container}>
             <FlatList
-                data={products}
+                data={products.filter((item) => item.ready)}
+                keyExtractor={(item) => item.name}
+                renderItem={({ item, index }) => 
+                    <ItemProducto product={item} index={index} onChange={() => alert("changing")}/>
+                }
+            />
+            <Text>asd</Text>
+            <FlatList
+                data={products.filter((item) => !item.ready)}
                 keyExtractor={(item) => item.name}
                 renderItem={({ item, index }) => 
                     <ItemProducto product={item} index={index} onChange={() => alert("changing")}/>

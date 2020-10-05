@@ -1,10 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import {
-    StyleSheet, FlatList, ActivityIndicator
+    StyleSheet, FlatList, ActivityIndicator, View, Text, Button
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ItemList from '../components/ItemList';
+import FloatingButton from '../components/FloatingButton';
+import Modal from '../components/Modal';
 
 const listsName = {
     lists: ["Almacen", "Carniceria"]
@@ -47,6 +49,8 @@ const list2 = {
 
 function Main({ navigation }) {
     const [loadingLists, setLoadingLists] = useState(true);
+    const [modal, setModal] = useState(true);
+
     const [lists, setLists] = useState([]);
 
     const storeTestLists = async () => {
@@ -79,17 +83,25 @@ function Main({ navigation }) {
 
     if (loadingLists) return (<ActivityIndicator size="large" color="#00ff00" />)
     return (
-        <FlatList style={styles.container}
-            data={lists}
-            keyExtractor={(item) => item}
-            renderItem={({ item, index }) => (
-                <ItemList
-                    listName={item}
-                    onSelectList={() => { navigation.navigate("List", { listName: item }) }}
-                    onCheckList={() => { archiveList(index) }}
-                />
-            )}
-        />
+        <View style={styles.container}>
+            <FlatList
+                data={lists}
+                keyExtractor={(item) => item}
+                renderItem={({ item, index }) => (
+                    <ItemList
+                        listName={item}
+                        onSelectList={() => { navigation.navigate("List", { listName: item }) }}
+                        onCheckList={() => { archiveList(index) }}
+                    />
+                )}
+            />
+            <FloatingButton onPress={() => setModal(true)} />
+            <Modal open={modal} setModal={setModal}>
+                <Text>asdadad</Text>
+                <Text>asdada asdasdasd asd</Text>
+                <Button onPress={() => setModal(false)} title="Cerrar" />
+            </Modal>
+        </View>
     )
 }
 

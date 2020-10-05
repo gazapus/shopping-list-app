@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView, Dimensions, Text, Modal, Button } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, ScrollView, Modal } from 'react-native';
 
 
-export default function App({ open, setModal, children }) {
+export default function ({ open, setModal, children }) {
     return (
         <Modal
             animationType="slide"

@@ -5,7 +5,7 @@ import { StyleSheet, View, ScrollView, Modal } from 'react-native';
 export default function ({ open, setModal, children }) {
     return (
         <Modal
-            animationType="slide"
+            animationType="fade"
             transparent={true}
             visible={open}
             onRequestClose={() => setModal(false)}

@@ -6,7 +6,8 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import ItemList from '../components/ItemList';
 import FloatingButton from '../components/FloatingButton';
-import Modal from '../components/Modal';
+import InputTextModal from '../components/InputTextModal';
+
 
 const listsName = {
     lists: ["Almacen", "Carniceria"]
@@ -50,7 +51,6 @@ const list2 = {
 function Main({ navigation }) {
     const [loadingLists, setLoadingLists] = useState(true);
     const [modal, setModal] = useState(true);
-
     const [lists, setLists] = useState([]);
 
     const storeTestLists = async () => {
@@ -69,7 +69,7 @@ function Main({ navigation }) {
         setLoadingLists(false);
     }
 
-    const archiveList = (index) => {
+    const deleteList = (index) => {
         let listsCopy = lists.map(x => x);
         if (index == 0) index = 1;
         listsCopy.splice(index - 1, index);
@@ -91,16 +91,18 @@ function Main({ navigation }) {
                     <ItemList
                         listName={item}
                         onSelectList={() => { navigation.navigate("List", { listName: item }) }}
-                        onCheckList={() => { archiveList(index) }}
+                        onCheckList={() => { deleteList(index) }}
                     />
                 )}
             />
             <FloatingButton onPress={() => setModal(true)} />
-            <Modal open={modal} setModal={setModal}>
-                <Text>asdadad</Text>
-                <Text>asdada asdasdasd asd</Text>
-                <Button onPress={() => setModal(false)} title="Cerrar" />
-            </Modal>
+            <InputTextModal
+                inputDescription="Nombre de la lista"
+                defaultText={`Lista del ${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}` }
+                onSubmit={(t) => {setModal(false)}}
+                open={modal}
+                setModal={setModal}
+            />
         </View>
     )
 }

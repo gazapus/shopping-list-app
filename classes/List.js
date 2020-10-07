@@ -4,8 +4,18 @@ export default class {
         this.items = items;
     }
 
-    addItem(item) {
-        this.items.push(item);
+    addItem(newItem) {
+        for(let item of this.items){
+            if(newItem.name === item.name){
+                throw new Error("Cant add twice the same product")
+            }
+        }
+        this.items.push(newItem);
+    }
+
+    deleteItem(item){
+        let index = this.items.findIndex(element => element.name === item.name);
+        this.items.splice(index, 1);
     }
 
     getTotal() {

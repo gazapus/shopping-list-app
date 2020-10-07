@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Input, TextInput, Button } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import ItemForm from './ItemForm';
 
 export default function ({onSubmit}) {

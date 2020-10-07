@@ -13,7 +13,6 @@ export default function ({ product, changeState }) {
         <View style={styles.container}>
             <View style={styles.item}>
                 <CheckBox
-                    disabled={false}
                     value={toggleCheckBox}
                     onValueChange={(newValue) => setToggleCheckBox(newValue)}
                     style={styles.item_checkbox}

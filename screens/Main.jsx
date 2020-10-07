@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import {
     StyleSheet, FlatList, ActivityIndicator, View, Text, Button
@@ -7,7 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ItemList from '../components/ItemList';
 import FloatingButton from '../components/FloatingButton';
 import InputTextModal from '../components/InputTextModal';
-
+import ShoppingListClass from '../classes/List';
 
 const listsName = {
     lists: ["Almacen", "Carniceria"]
@@ -25,12 +24,55 @@ const list1 = {
         price: 150,
         quantity: 2,
         ready: true
-    }, {
-        name: "Milanesa frijol",
-        price: 150,
+    },
+    {
+        name: "Pollito",
+        price: 22,
         quantity: 2,
-        ready: true
-    }]
+        ready: false
+    },
+    {
+        name: "Gato",
+        price: 22,
+        quantity: 2,
+        ready: false
+    },
+    {
+        name: "Perro",
+        price: 22,
+        quantity: 2,
+        ready: false
+    },
+    {
+        name: "langosta",
+        price: 22,
+        quantity: 2,
+        ready: false
+    },
+    {
+        name: "doritos",
+        price: 22,
+        quantity: 2,
+        ready: false
+    },
+    {
+        name: "Pollito4",
+        price: 22,
+        quantity: 2,
+        ready: false
+    },
+    {
+        name: "Pollito2",
+        price: 22,
+        quantity: 2,
+        ready: false
+    },
+    {
+        name: "Pollito3",
+        price: 22,
+        quantity: 2,
+        ready: false
+    },]
 }
 
 const list2 = {
@@ -50,7 +92,7 @@ const list2 = {
 
 function Main({ navigation }) {
     const [loadingLists, setLoadingLists] = useState(true);
-    const [modal, setModal] = useState(true);
+    const [modal, setModal] = useState(false);
     const [lists, setLists] = useState([]);
 
     const storeTestLists = async () => {
@@ -73,7 +115,31 @@ function Main({ navigation }) {
         let listsCopy = lists.map(x => x);
         if (index == 0) index = 1;
         listsCopy.splice(index - 1, index);
-        setLists(listsCopy)
+        setLists(listsCopy);
+        updateLists();
+    }
+
+    const createList = async (listName) => {
+        let newList = new ShoppingListClass(listName);
+        try {
+            await AsyncStorage.setItem(listName, JSON.stringify(newList));
+            let newLists = lists.map(x => x);
+            newLists.push(listName);
+            setLists(newLists);
+            updateLists();
+        } catch (e) {
+            alert("Error")
+        } finally {
+            setModal(false)
+        }
+    }
+
+    const updateLists = async () => {
+        try {
+            await AsyncStorage.setItem("lists", JSON.stringify(lists));
+        } catch (e) {
+            alert("Error at save list")
+        }
     }
 
     useEffect(() => {
@@ -98,8 +164,8 @@ function Main({ navigation }) {
             <FloatingButton onPress={() => setModal(true)} />
             <InputTextModal
                 inputDescription="Nombre de la lista"
-                defaultText={`Lista del ${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}` }
-                onSubmit={(t) => {setModal(false)}}
+                defaultText={`Lista del ${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`}
+                onSubmit={createList}
                 open={modal}
                 setModal={setModal}
             />

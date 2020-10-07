@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, FlatList, ActivityIndicator, Text} from 'react-native';
+import { StyleSheet, ScrollView, FlatList, ActivityIndicator, Text, SafeAreaView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ItemProducto from '../components/ItemProduct';
+import AddButton  from '../components/AddButton'
 
 function List({ navigation }) {
     const listName = navigation.getParam('listName');
@@ -27,7 +28,11 @@ function List({ navigation }) {
 
     if (loadingItems) return (<ActivityIndicator size="large" color="#00ff00" />)
     return (
-        <View style={styles.container}>
+        <ScrollView 
+            stickyHeaderIndices={[0]}
+            style={styles.container}
+        >
+            <AddButton/>
             <FlatList
                 data={products.filter((item) => item.ready)}
                 keyExtractor={(item) => item.name}
@@ -35,7 +40,7 @@ function List({ navigation }) {
                     <ItemProducto product={item} index={index} onChange={() => alert("changing")}/>
                 }
             />
-            <Text>asd</Text>
+            <Text>LISTOS</Text>
             <FlatList
                 data={products.filter((item) => !item.ready)}
                 keyExtractor={(item) => item.name}
@@ -43,7 +48,7 @@ function List({ navigation }) {
                     <ItemProducto product={item} index={index} onChange={() => alert("changing")}/>
                 }
             />
-        </View>
+        </ScrollView>
     )
 }
 
@@ -55,8 +60,8 @@ List.navigationOptions = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        flex: 1
     },
 });
 

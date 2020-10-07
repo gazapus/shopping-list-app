@@ -15,6 +15,7 @@ export default function ({open, setModal, defaultText, onSubmit, inputDescriptio
         <Modal open={open} setModal={setModal}>
             <Text>{inputDescription || ""}</Text>
             <TextInput
+                autoCapitalize="sentences"
                 placeholder={defaultText || ""}
                 maxLength={30}
                 style={styles.text_input}

@@ -3,27 +3,34 @@ import { StyleSheet, ScrollView, FlatList, ActivityIndicator, Text, SafeAreaView
 import AsyncStorage from '@react-native-community/async-storage';
 import ItemProducto from '../components/ItemProduct';
 import AddButton  from '../components/AddButton'
+import ShoppingListClass from '../classes/List';
+
 
 function List({ navigation }) {
     const listName = navigation.getParam('listName');
-    const [products, setProducts] = useState([]);
+    const [shoppingList, setShoppingList] = useState({});
     const [loadingItems, setLoadingItems] = useState(true);
 
-    const getItems = async () => {
+    const getShoppingList = async () => {
         const listString = await AsyncStorage.getItem(listName);
-        const listObject = listString != null ? JSON.parse(listString) : null;
-        setProducts(listObject.items);
+        const result = listString != null ? JSON.parse(listString) : null;
+        setShoppingList(result);
         setLoadingItems(false);
     }
 
-    const updateProduct = (index, productUpdated) => {
-        let productsCopy = producto.map( x => x);
-        productsCopy[index] = productUpdated;
-        setProducts(productsCopy);
+    const addProduct = async (product) => {
+        let updatedShopList = new ShoppingListClass(listName, shoppingList.items);
+        updatedShopList.items.push(product);
+        try{
+            await AsyncStorage.setItem(listName, JSON.stringify(updatedShopList));
+            setShoppingList(updatedShopList);
+        } catch {
+            alert("Error at save");
+        }
     }
 
     useEffect(() => {
-        getItems();
+        getShoppingList();
     }, []);
 
     if (loadingItems) return (<ActivityIndicator size="large" color="#00ff00" />)
@@ -32,9 +39,9 @@ function List({ navigation }) {
             stickyHeaderIndices={[0]}
             style={styles.container}
         >
-            <AddButton/>
+            <AddButton onSubmit={addProduct}/>
             <FlatList
-                data={products.filter((item) => item.ready)}
+                data={shoppingList.items.filter((item) => !item.ready)}
                 keyExtractor={(item) => item.name}
                 renderItem={({ item, index }) => 
                     <ItemProducto product={item} index={index} onChange={() => alert("changing")}/>
@@ -42,7 +49,7 @@ function List({ navigation }) {
             />
             <Text>LISTOS</Text>
             <FlatList
-                data={products.filter((item) => !item.ready)}
+                data={shoppingList.items.filter((item) => item.ready)}
                 keyExtractor={(item) => item.name}
                 renderItem={({ item, index }) => 
                     <ItemProducto product={item} index={index} onChange={() => alert("changing")}/>

@@ -1,7 +1,11 @@
 export default class {
-    constructor(name) {
+    constructor(name, items=[]) {
         this.name = name;
-        this.items = [];
+        this.items = items;
+    }
+
+    addItem(item) {
+        this.items.push(item);
     }
 
     getTotal() {

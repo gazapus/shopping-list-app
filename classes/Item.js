@@ -3,10 +3,11 @@ export default class {
         this.setName(name);
         this.setPrice(price);
         this.setQuantity(quantity);
+        this.ready = false;
     }
 
     setName(name) {
-        if (name.length === 0) throw new Error("Cant create list without name");
+        if (name.length === 0) throw new Error("Cant create item without name");
         this.name = name;
     }
 

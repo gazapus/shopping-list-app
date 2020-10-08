@@ -103,7 +103,7 @@ function List({ navigation }) {
                     onCheck={checkItem}
                 />)
             }
-            <Text>LISTOS</Text>
+            <View style={styles.lists_separator}></View>
             {shoppingList.items.filter(item => item.ready)
                 .map(item => <ItemProduct
                     key={item.name}
@@ -152,6 +152,15 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 20,
         paddingBottom: 10
+    },
+    lists_separator:{
+        height: 1,
+        borderTopWidth: 2,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 4,
+        marginBottom: 4,
+        borderColor: 'rgba(205, 205, 205, 0.7)'
     }
 });
 

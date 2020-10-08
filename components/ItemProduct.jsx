@@ -10,9 +10,9 @@ export default function ({ product, onUpdate, onDelete, onCheck}) {
         itemUpdated.ready = !itemUpdated.ready;
         onCheck(itemUpdated);
     }
-
+    let statusStyle = product.ready ? styles.item_ready : styles.item_not_ready;
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, statusStyle]}>
             <View style={styles.item}>
                 <CheckBox       
                     value={product.ready}
@@ -43,9 +43,16 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         borderWidth: 1,
-        borderColor: 'rgba(221, 221, 221, 0.7)', 
         padding: 3,
         paddingRight: 8
+    },
+    item_ready: {
+        backgroundColor: '#D7EFB4',
+        borderColor: 'rgba(120, 112, 111, 0.3)', 
+    },
+    item_not_ready: {
+        borderColor: 'rgba(221, 221, 221, 0.7)', 
+        backgroundColor: '#FFF5F4',
     },
     item: {
         flexDirection: 'row',

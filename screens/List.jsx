@@ -68,6 +68,20 @@ function List({ navigation }) {
         }
     }
 
+    const checkItem = async (item) => {
+        let updatedShopList = new ShoppingListClass(listName, shoppingList.items);
+        updatedShopList.updateItem(item, item);
+        try {
+            await AsyncStorage.setItem(listName, JSON.stringify(updatedShopList));
+            setShoppingList(updatedShopList);
+        } catch {
+            alert("Error al actualizar");
+        } finally {
+            setItemToEdit({});
+            setEditingItem(false);
+        }
+    }
+
     useEffect(() => {
         getShoppingList();
     }, []);
@@ -79,17 +93,25 @@ function List({ navigation }) {
             style={styles.container}
         >
             <AddButton onSubmit={addProduct} />
-            {shoppingList.items.filter(item => !item.ready).map(item => <ItemProduct
-                product={item}
-                onUpdate={openItemUpdate}
-                onDelete={deleteProduct}
-            />)}
+            {shoppingList.items.filter(item => !item.ready)
+                .map(item => <ItemProduct
+                    key={item.name}
+                    product={item}
+                    onUpdate={openItemUpdate}
+                    onDelete={deleteProduct}
+                    onCheck={checkItem}
+                />)
+            }
             <Text>LISTOS</Text>
-            {shoppingList.items.filter(item => item.ready).map(item => <ItemProduct
-                product={item}
-                onUpdate={openItemUpdate}
-                onDelete={deleteProduct}
-            />)}
+            {shoppingList.items.filter(item => item.ready)
+                .map(item => <ItemProduct
+                    key={item.name}
+                    product={item}
+                    onUpdate={openItemUpdate}
+                    onDelete={deleteProduct}
+                    onCheck={checkItem}
+                />)
+            }
             <Modal open={editingItem} setModal={setEditingItem}>
                 <View style={styles.modal_editItem}>
                     <Text style={styles.modal_editItem_title}>Actualizar Item</Text>

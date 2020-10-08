@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CheckBox from '@react-native-community/checkbox';
 
-export default function ({ product, onUpdate, onDelete }) {
-    const [toggleCheckBox, setToggleCheckBox] = useState(false);
+export default function ({ product, onUpdate, onDelete, onCheck}) {
+
+    const checkItem = (item) => {
+        let itemUpdated = Object.assign({}, item);
+        itemUpdated.ready = !itemUpdated.ready;
+        onCheck(itemUpdated);
+    }
 
     return (
         <View style={styles.container}>
             <View style={styles.item}>
-                <CheckBox
-                    value={toggleCheckBox}
-                    onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                <CheckBox       ///QUEDE ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                    value={product.ready}
+                    onValueChange={() => checkItem(product)}
                     style={styles.item_checkbox}
                 />
                 <TouchableNativeFeedback onPress={() => onUpdate(product)}>

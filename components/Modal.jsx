@@ -34,8 +34,7 @@ const styles = StyleSheet.create({
     modal_inner_window: {
         borderColor: '#989695',
         backgroundColor: '#F9ECE6',
-        width: '85%',
-        minHeight: '50%',
+        width: '98%',
         maxHeight: '90%',
         alignItems: 'center',
     },
@@ -45,6 +44,5 @@ const styles = StyleSheet.create({
     modal_content_body: {
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 10
     }
 })

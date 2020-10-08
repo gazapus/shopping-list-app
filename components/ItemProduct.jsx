@@ -4,10 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CheckBox from '@react-native-community/checkbox';
 
 export default function ({ product, onUpdate, onDelete }) {
-    const [toggleCheckBox, setToggleCheckBox] = useState(false)
-    /* cuando cambie algun dato del producto llama a actualizar(index, productoACTUALIZADO)
-    * donde reemplaza el elemento en index posicion por productoActualizado y lo guarda
-    */
+    const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
     return (
         <View style={styles.container}>
@@ -17,7 +14,7 @@ export default function ({ product, onUpdate, onDelete }) {
                     onValueChange={(newValue) => setToggleCheckBox(newValue)}
                     style={styles.item_checkbox}
                 />
-                <TouchableNativeFeedback onPress={onUpdate}>
+                <TouchableNativeFeedback onPress={() => onUpdate(product)}>
                     <View style={styles.item_details}>
                         <Text style={styles.item_details_name}>
                             {product.name}

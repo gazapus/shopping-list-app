@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 import ItemClass from '../classes/Item';
 
-export default function ({onSubmit}) {
-    const [product, setProduct] = useState("");
+export default function ({onSubmit, item}) {
+    const [product, setProduct] = useState();
     const [price, setPrice] = useState("0");
     const [quantity, setQuantity] = useState("1");
 
@@ -45,6 +45,14 @@ export default function ({onSubmit}) {
             }
         }
     }
+
+    useEffect(() => {
+       if(item){
+           setProduct(item.name);
+           setPrice(item.price.toString());
+           setQuantity(item.quantity.toString());
+       }
+    }, []);
 
     return (
         <View style={styles.form_container}>

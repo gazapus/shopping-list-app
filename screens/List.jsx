@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, FlatList, ActivityIndicator, Text, SafeAreaView } from 'react-native';
+import { StyleSheet, ScrollView, FlatList, ActivityIndicator, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ItemProduct from '../components/ItemProduct';
-import AddButton from '../components/AddButton'
+import AddButton from '../components/AddButton';
 import ShoppingListClass from '../classes/List';
+import Modal from '../components/Modal';
+import ItemForm from '../components/ItemForm';
 
 
 function List({ navigation }) {
     const listName = navigation.getParam('listName');
     const [shoppingList, setShoppingList] = useState({});
     const [loadingItems, setLoadingItems] = useState(true);
+    const [editingItem, setEditingItem] = useState(false);
+    const [itemToEdit, setItemToEdit] = useState({});
 
     const getShoppingList = async () => {
         const listString = await AsyncStorage.getItem(listName);
@@ -45,8 +49,23 @@ function List({ navigation }) {
         }
     }
 
-    const updateProduct = async (product) => {
+    const openItemUpdate = (product) => {
+        setItemToEdit(product);
+        setEditingItem(true);
+    }
 
+    const updateItem = async(itemUpdated) => {
+        let updatedShopList = new ShoppingListClass(listName, shoppingList.items);
+        updatedShopList.updateItem(itemToEdit, itemUpdated);
+        try {
+            await AsyncStorage.setItem(listName, JSON.stringify(updatedShopList));
+            setShoppingList(updatedShopList);
+        } catch {
+            alert("Error al actualizar");
+        } finally {
+            setItemToEdit({});
+            setEditingItem(false);
+        }
     }
 
     useEffect(() => {
@@ -67,7 +86,7 @@ function List({ navigation }) {
                     <ItemProduct
                         product={item}
                         index={index}
-                        onUpdate={() => alert("changing")}
+                        onUpdate={openItemUpdate}
                         onDelete={deleteProduct}
                     />
                 }
@@ -80,11 +99,17 @@ function List({ navigation }) {
                     <ItemProduct
                         product={item}
                         index={index}
-                        onUpdate={() => alert("changing")}
+                        onUpdate={openItemUpdate}
                         onDelete={deleteProduct}
                     />
                 }
             />
+            <Modal open={editingItem} setModal={setEditingItem}>
+                <View style={styles.modal_editItem}>
+                    <Text style={styles.modal_editItem_title}>Actualizar Item</Text>
+                    <ItemForm onSubmit={updateItem} item={itemToEdit}/>
+                </View>
+            </Modal>
         </ScrollView>
     )
 }
@@ -100,6 +125,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flex: 1
     },
+    modal_editItem: {
+        width: '100%',
+        paddingTop: 10,
+        paddingLeft: 2,
+        paddingRight: 2,
+    },
+    modal_editItem_title: {
+        textAlign: 'center',
+        fontSize: 20
+    }
 });
 
 export default List;

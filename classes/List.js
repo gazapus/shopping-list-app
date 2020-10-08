@@ -18,6 +18,11 @@ export default class {
         this.items.splice(index, 1);
     }
 
+    updateItem(oldItem, newItem) {
+        let itemIndex = this.items.findIndex(e => e.name === oldItem.name);
+        this.items[itemIndex] = newItem;
+    }
+
     getTotal() {
         let total = 0;
         for (let item of items) {

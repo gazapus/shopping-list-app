@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 import ItemClass from '../classes/Item';
 
 export default function ({ onSubmit, item }) {
-    const [product, setProduct] = useState();
+    const [product, setProduct] = useState("");
     const [price, setPrice] = useState("0");
     const [quantity, setQuantity] = useState("1");
     const [ready, setReady] = useState(false);
@@ -65,7 +65,7 @@ export default function ({ onSubmit, item }) {
     return (
         <View style={styles.form_container}>
             <TextInput
-                placeholder="Product name"
+                placeholder="Nombre del producto"
                 value={product}
                 onChangeText={(text) => setProduct(text)}
                 style={[styles.form_productInput, styles.form_input]}
@@ -76,21 +76,23 @@ export default function ({ onSubmit, item }) {
             />
             <View style={styles.form_subsection}>
                 <View style={styles.form_number_labels}>
-                    <Text style={styles.form_price_text}>Price</Text>
+                    <Text style={styles.form_price_text}>Precio</Text>
                     <TextInput
                         value={price}
                         keyboardType={'numeric'}
                         onChangeText={(number) => setValidatedPrice(number)}
+                        onSubmitEditing={submit}
                         selectTextOnFocus={true}
                         style={[styles.form_number_input, styles.form_input]}
                     />
                 </View>
                 <View style={styles.form_number_labels}>
-                    <Text>Quantity</Text>
+                    <Text>Cantidad</Text>
                     <TextInput
                         value={quantity}
                         keyboardType={'numeric'}
                         onChangeText={(number) => setValidatedQuantity(number)}
+                        onSubmitEditing={submit}
                         selectTextOnFocus={true}
                         style={[styles.form_number_input, styles.form_input]}
                     />
@@ -98,7 +100,7 @@ export default function ({ onSubmit, item }) {
                 <View style={styles.add} >
                     <Button
                         onPress={submit}
-                        title="AGREGAR"
+                        title="OK"
                         color="blue"
                     />
                 </View>
@@ -150,6 +152,8 @@ const styles = StyleSheet.create({
     },
     add: {
         borderRadius: 30,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexGrow: 1
     }
 })

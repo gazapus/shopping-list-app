@@ -8,25 +8,19 @@ import FloatingButton from '../components/FloatingButton';
 import InputTextModal from '../components/InputTextModal';
 import ShoppingListClass from '../classes/List';
 
-const listsName = {
-    lists: []
-}
-
-
 function Main({ navigation }) {
     const [loadingLists, setLoadingLists] = useState(true);
     const [modal, setModal] = useState(false);
     const [lists, setLists] = useState([]);
 
-    const storeTestLists = async () => {
-        const jsonValue = JSON.stringify(listsName)
-        await AsyncStorage.setItem('lists', jsonValue)
-    }
-
     const getLists = async () => {
         const listsString = await AsyncStorage.getItem('lists');
-        const listObject = listsString != null ? JSON.parse(listsString) : null;
-        setLists(listObject.lists);
+        if (listsString) {
+            let listsObject = JSON.parse(listsString);
+            if (listsObject.lists) {
+                setLists(JSON.parse(listsString).lists);
+            }
+        }
         setLoadingLists(false);
     }
 
@@ -41,9 +35,9 @@ function Main({ navigation }) {
         let newList = new ShoppingListClass(listName);
         try {
             await AsyncStorage.setItem(listName, JSON.stringify(newList));
-            let newLists = lists.map(x => x);
-            newLists.push(listName);
-            setLists(newLists);
+            let listsCopy = lists.map(x => x);
+            listsCopy.push(listName);
+            setLists(listsCopy);
             updateLists();
         } catch (e) {
             alert("Error")
@@ -61,7 +55,6 @@ function Main({ navigation }) {
     }
 
     useEffect(() => {
-        storeTestLists();
         getLists();
     }, [])
 
@@ -69,7 +62,7 @@ function Main({ navigation }) {
     return (
         <View style={styles.container}>
             {
-                lists.length === 0 ? <Text style={{textAlign: 'center'}}>No hay listas</Text> : <FlatList
+                lists.length === 0 ? <Text style={{ textAlign: 'center' }}>No hay listas</Text> : <FlatList
                     data={lists}
                     keyExtractor={(item) => item}
                     renderItem={({ item, index }) => (

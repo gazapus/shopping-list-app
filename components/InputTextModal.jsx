@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, Button, Text, View } from 'react-native';
+import { StyleSheet, TextInput, Button, Text, View, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import Modal from './Modal';
 
 export default function ({ open, setModal, defaultText, onSubmit, inputDescription }) {
@@ -12,6 +13,11 @@ export default function ({ open, setModal, defaultText, onSubmit, inputDescripti
 
     return (
         <Modal open={open} setModal={setModal}>
+            <View style={styles.modal_closeIcon}>
+                <TouchableOpacity onPress={() => setModal(false)}>
+                    <Ionicons name="ios-close" size={35} color="#A20000" />
+                </TouchableOpacity>
+            </View>
             <View style={styles.input_cotainer}>
                 <Text style={styles.input_desctiption}>{inputDescription || ""}</Text>
                 <TextInput
@@ -46,5 +52,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         minWidth: '80%',
         paddingLeft: 5,
-    }
+    },
+    modal_closeIcon: {
+        width: '100%',
+        flexDirection: 'row-reverse',
+        paddingLeft: 12,
+    },
 })

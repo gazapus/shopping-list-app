@@ -14,7 +14,7 @@ export default function ({ product, onUpdate, onDelete, onCheck}) {
     return (
         <View style={styles.container}>
             <View style={styles.item}>
-                <CheckBox       ///QUEDE ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                <CheckBox       
                     value={product.ready}
                     onValueChange={() => checkItem(product)}
                     style={styles.item_checkbox}

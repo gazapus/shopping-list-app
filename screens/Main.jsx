@@ -113,8 +113,7 @@ function Main({ navigation }) {
 
     const deleteList = (index) => {
         let listsCopy = lists.map(x => x);
-        if (index == 0) index = 1;
-        listsCopy.splice(index - 1, index);
+        listsCopy.splice(index, index + 1);
         setLists(listsCopy);
         updateLists();
     }

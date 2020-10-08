@@ -64,6 +64,7 @@ export default function ({onSubmit, item}) {
                 autoCapitalize="sentences"
                 maxLength={30}
                 onSubmitEditing={submit}
+                enablesReturnKeyAutomatically={true}
             />
             <View style={styles.form_subsection}>
                 <View style={styles.form_number_labels}>

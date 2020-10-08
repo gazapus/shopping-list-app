@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, FlatList, ActivityIndicator, Text, View } from 'react-native';
+import { StyleSheet, ScrollView, ActivityIndicator, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ItemProduct from '../components/ItemProduct';
 import AddButton from '../components/AddButton';
@@ -54,7 +54,7 @@ function List({ navigation }) {
         setEditingItem(true);
     }
 
-    const updateItem = async(itemUpdated) => {
+    const updateItem = async (itemUpdated) => {
         let updatedShopList = new ShoppingListClass(listName, shoppingList.items);
         updatedShopList.updateItem(itemToEdit, itemUpdated);
         try {
@@ -79,35 +79,21 @@ function List({ navigation }) {
             style={styles.container}
         >
             <AddButton onSubmit={addProduct} />
-            <FlatList
-                data={shoppingList.items.filter((item) => !item.ready)}
-                keyExtractor={(item) => item.name}
-                renderItem={({ item, index }) =>
-                    <ItemProduct
-                        product={item}
-                        index={index}
-                        onUpdate={openItemUpdate}
-                        onDelete={deleteProduct}
-                    />
-                }
-            />
+            {shoppingList.items.filter(item => !item.ready).map(item => <ItemProduct
+                product={item}
+                onUpdate={openItemUpdate}
+                onDelete={deleteProduct}
+            />)}
             <Text>LISTOS</Text>
-            <FlatList
-                data={shoppingList.items.filter((item) => item.ready)}
-                keyExtractor={(item) => item.name}
-                renderItem={({ item, index }) =>
-                    <ItemProduct
-                        product={item}
-                        index={index}
-                        onUpdate={openItemUpdate}
-                        onDelete={deleteProduct}
-                    />
-                }
-            />
+            {shoppingList.items.filter(item => item.ready).map(item => <ItemProduct
+                product={item}
+                onUpdate={openItemUpdate}
+                onDelete={deleteProduct}
+            />)}
             <Modal open={editingItem} setModal={setEditingItem}>
                 <View style={styles.modal_editItem}>
                     <Text style={styles.modal_editItem_title}>Actualizar Item</Text>
-                    <ItemForm onSubmit={updateItem} item={itemToEdit}/>
+                    <ItemForm onSubmit={updateItem} item={itemToEdit} />
                 </View>
             </Modal>
         </ScrollView>

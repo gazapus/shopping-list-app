@@ -7,8 +7,11 @@ export default function ({ open, setModal, defaultText, onSubmit, inputDescripti
     const [text, setText] = useState("");
 
     const submit = () => {
-        if (text === "") setText(defaultText);
-        onSubmit(text);
+        if (text === "" || text === " "){
+            onSubmit(defaultText);
+        } else {
+            onSubmit(text);
+        }
     }
 
     return (

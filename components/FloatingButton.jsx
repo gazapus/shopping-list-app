@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function ({onPress}) {
+export default function ({onPress, iconName}) {
 
     return (
         <TouchableOpacity
@@ -10,7 +10,7 @@ export default function ({onPress}) {
             onPress={onPress}
             style={styles.touchableOpacityStyle}
         >
-            <Ionicons name="ios-add-circle" size={50} color="green" />
+            <Ionicons name={iconName} size={50} color="green" />
         </TouchableOpacity>
     )
 }

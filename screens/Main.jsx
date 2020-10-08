@@ -160,7 +160,7 @@ function Main({ navigation }) {
                     />
                 )}
             />
-            <FloatingButton onPress={() => setModal(true)} />
+            <FloatingButton onPress={() => setModal(true)} iconName={"ios-add-circle"} />
             <InputTextModal
                 inputDescription="Nombre de la lista"
                 defaultText={`Lista del ${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`}

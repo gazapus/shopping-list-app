@@ -1,9 +1,9 @@
 export default class {
-    constructor(name, price, quantity) {
+    constructor(name, price, quantity, ready=false) {
         this.setName(name);
         this.setPrice(price);
         this.setQuantity(quantity);
-        this.ready = false;
+        this.ready = ready;
     }
 
     setName(name) {

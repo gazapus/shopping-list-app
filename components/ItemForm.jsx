@@ -2,26 +2,33 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 import ItemClass from '../classes/Item';
 
-export default function ({onSubmit, item}) {
+export default function ({ onSubmit, item }) {
     const [product, setProduct] = useState();
     const [price, setPrice] = useState("0");
     const [quantity, setQuantity] = useState("1");
+    const [ready, setReady] = useState(false);
+
 
     const submit = () => {
-        let newItem = new ItemClass(product, price, quantity);
-        onSubmit(newItem);
-        setProduct("");
-        setPrice("0");
-        setQuantity("1");
+        if (product.length != 0) {
+            let newItem = new ItemClass(product, price, quantity, ready);
+            onSubmit(newItem);
+            setProduct("");
+            setPrice("0");
+            setQuantity("1");
+            setReady(false);
+        } else {
+            alert("No se puede crear un item sin producto")
+        }
     }
-    
+
     const validateNumber = (input) => {
-        const numbers = ["0","1","2","3","4","5","6","7","8","9","."];
+        const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
         let pointsQuantity = 0;
         let cursor = 0;
         let onlyNumbers = true;
-        while(cursor < input.length && pointsQuantity <= 1 && onlyNumbers) {
-            if(input.charAt(cursor) === "." ) {
+        while (cursor < input.length && pointsQuantity <= 1 && onlyNumbers) {
+            if (input.charAt(cursor) === ".") {
                 pointsQuantity++;
             }
             onlyNumbers = numbers.indexOf(input.charAt(cursor)) != -1;
@@ -31,27 +38,28 @@ export default function ({onSubmit, item}) {
     }
 
     const setValidatedPrice = (input) => {
-        if(validateNumber(input)) {
-            if(parseFloat(input) >= 0){
+        if (validateNumber(input)) {
+            if (parseFloat(input) >= 0) {
                 setPrice(input);
             }
         }
     }
 
     const setValidatedQuantity = (input) => {
-        if(validateNumber(input)) {
-            if(parseFloat(input) > 0){
+        if (validateNumber(input)) {
+            if (parseFloat(input) > 0) {
                 setQuantity(input);
             }
         }
     }
 
     useEffect(() => {
-       if(item){
-           setProduct(item.name);
-           setPrice(item.price.toString());
-           setQuantity(item.quantity.toString());
-       }
+        if (item) {
+            setProduct(item.name);
+            setPrice(item.price.toString());
+            setQuantity(item.quantity.toString());
+            setReady(item.ready);
+        }
     }, []);
 
     return (

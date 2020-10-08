@@ -25,7 +25,7 @@ export default class {
 
     getTotal() {
         let total = 0;
-        for (let item of items) {
+        for (let item of this.items) {
             total += item.price * item.quantity;
         }
         return total;
@@ -33,21 +33,11 @@ export default class {
 
     getReadyTotal() {
         let total = 0;
-        for (let item of items) {
+        for (let item of this.items) {
             if (item.ready) {
                 total += item.price * item.quantity;
             }
         }
         return total;
-    }
-
-    getReadyQuantity() {
-        let readyItems = 0;
-        for (let item of items) {
-            if (item.ready) {
-                readyItems++;
-            }
-        }
-        return readyItems;
     }
 }

@@ -7,7 +7,7 @@ import AddButton from '../components/AddButton';
 import ShoppingListClass from '../classes/List';
 import Modal from '../components/Modal';
 import ItemForm from '../components/ItemForm';
-
+import BottomBar from '../components/BottomBar';
 
 function List({ navigation }) {
     const listName = navigation.getParam('listName');
@@ -36,7 +36,6 @@ function List({ navigation }) {
         } catch {
             alert(`${product.name} ya se encuentra en la lista`);
         }
-
     }
 
     const deleteProduct = async (product) => {
@@ -89,42 +88,44 @@ function List({ navigation }) {
 
     if (loadingItems) return (<ActivityIndicator size="large" color="#00ff00" />)
     return (
-        <ScrollView
-            stickyHeaderIndices={[0]}
-            style={styles.container}
-        >
-            <AddButton onSubmit={addProduct} />
-            {shoppingList.items.filter(item => !item.ready)
-                .map(item => <ItemProduct
-                    key={item.name}
-                    product={item}
-                    onUpdate={openItemUpdate}
-                    onDelete={deleteProduct}
-                    onCheck={checkItem}
-                />)
-            }
-            <View style={styles.lists_separator}></View>
-            {shoppingList.items.filter(item => item.ready)
-                .map(item => <ItemProduct
-                    key={item.name}
-                    product={item}
-                    onUpdate={openItemUpdate}
-                    onDelete={deleteProduct}
-                    onCheck={checkItem}
-                />)
-            }
-            <Modal open={editingItem} setModal={setEditingItem}>
-                <View style={styles.modal_editItem}>
-                    <TouchableOpacity onPress={() => setEditingItem(false)}>
-                        <View style={styles.modal_closeIcon}>
-                            <Ionicons name="ios-close" size={35} color="#A20000" />
-                        </View>
-                    </TouchableOpacity>
-                    <Text style={styles.modal_editItem_title}>Actualizar Item</Text>
-                    <ItemForm onSubmit={updateItem} item={itemToEdit} />
-                </View>
-            </Modal>
-        </ScrollView>
+        <View style={styles.container}>
+            <ScrollView
+                stickyHeaderIndices={[0]}
+            >
+                <AddButton onSubmit={addProduct} />
+                {shoppingList.items.filter(item => !item.ready)
+                    .map(item => <ItemProduct
+                        key={item.name}
+                        product={item}
+                        onUpdate={openItemUpdate}
+                        onDelete={deleteProduct}
+                        onCheck={checkItem}
+                    />)
+                }
+                <View style={styles.lists_separator}></View>
+                {shoppingList.items.filter(item => item.ready)
+                    .map(item => <ItemProduct
+                        key={item.name}
+                        product={item}
+                        onUpdate={openItemUpdate}
+                        onDelete={deleteProduct}
+                        onCheck={checkItem}
+                    />)
+                }
+                <Modal open={editingItem} setModal={setEditingItem}>
+                    <View style={styles.modal_editItem}>
+                        <TouchableOpacity onPress={() => setEditingItem(false)}>
+                            <View style={styles.modal_closeIcon}>
+                                <Ionicons name="ios-close" size={35} color="#A20000" />
+                            </View>
+                        </TouchableOpacity>
+                        <Text style={styles.modal_editItem_title}>Actualizar Item</Text>
+                        <ItemForm onSubmit={updateItem} item={itemToEdit} />
+                    </View>
+                </Modal>
+            </ScrollView>
+            <BottomBar estimated={shoppingList.getReadyTotal()} total={shoppingList.getTotal()} />
+        </View>
     )
 }
 
@@ -137,7 +138,7 @@ List.navigationOptions = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        flex: 1
+        flex: 1,
     },
     modal_closeIcon: {
         flexDirection: "row-reverse",
@@ -153,7 +154,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         paddingBottom: 10
     },
-    lists_separator:{
+    lists_separator: {
         height: 1,
         borderTopWidth: 2,
         marginLeft: 10,

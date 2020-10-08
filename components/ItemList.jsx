@@ -12,7 +12,7 @@ export default function ({ listName, onSelectList, onCheckList }) {
                         {listName}
                     </Text>
                     <TouchableWithoutFeedback onPress={onCheckList}>
-                        <MaterialCommunityIcons name="checkbox-blank-circle-outline" size={30} color="#152AAB" />
+                        <MaterialCommunityIcons name="delete-circle" size={30} color="#3F0606" />
                     </TouchableWithoutFeedback>
                 </View>
             </TouchableNativeFeedback >
